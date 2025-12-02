@@ -89,7 +89,9 @@ class Devis extends Model
         ]);
 
         // Mettre à jour le statut du ticket
-        $this->ticket->changerStatut('devis_approuve');
+        // ⚠️ IMPORTANT : Reste sur "devis_envoye" jusqu'au paiement
+        // Le statut passera à "devis_approuve" automatiquement après paiement confirmé
+        $this->ticket->update(['statut' => 'devis_envoye']); // Garde statut actuel
     }
 
     /**

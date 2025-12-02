@@ -60,13 +60,31 @@ class Paiement extends Model
     {
         parent::boot();
 
+        // Vérifier avant création : pas de paiement confirmé existant
+        static::creating(function ($paiement) {
+            $paiementExistant = self::where('facture_id', $paiement->facture_id)
+                ->where('statut', 'confirme')
+                ->exists();
+
+            if ($paiementExistant) {
+                throw new \Exception('Cette facture a déjà été payée. Paiement multiple interdit.');
+            }
+        });
+
+        // Après confirmation du paiement
         static::saved(function ($paiement) {
             if ($paiement->statut === 'confirme') {
                 $facture = $paiement->facture;
                 
-                // Si le montant payé couvre la facture
-                if ($facture->montant_paye >= $facture->montant_ttc) {
+                // RÈGLE MÉTIER : Le paiement doit être intégral
+                if ($paiement->montant == $facture->montant_ttc) {
                     $facture->marquerPayee();
+                    
+                    // 🔓 DÉBLOCAGE : Passer le ticket en "devis_approuve" pour permettre réparation
+                    $ticket = $facture->ticket;
+                    if ($ticket && $ticket->statut === 'devis_envoye') {
+                        $ticket->update(['statut' => 'devis_approuve']);
+                    }
                 }
             }
         });
