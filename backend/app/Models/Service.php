@@ -13,16 +13,12 @@ class Service extends Model
         'libelle',
         'categorie',
         'description',
-        'prix_indicatif',
-        'duree_moyenne',
         'actif',
     ];
 
     protected function casts(): array
     {
         return [
-            'prix_indicatif' => 'decimal:2',
-            'duree_moyenne' => 'integer',
             'actif' => 'boolean',
         ];
     }

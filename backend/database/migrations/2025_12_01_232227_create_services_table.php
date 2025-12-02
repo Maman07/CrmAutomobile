@@ -29,10 +29,6 @@ return new class extends Migration
             
             $table->text('description')->nullable();
             
-            // Tarification
-            $table->decimal('prix_indicatif', 10, 2)->nullable()->comment('En FCFA');
-            $table->integer('duree_moyenne')->nullable()->comment('En minutes');
-            
             // Statut
             $table->boolean('actif')->default(true);
             

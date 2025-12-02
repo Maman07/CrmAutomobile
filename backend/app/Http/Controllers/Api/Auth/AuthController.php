@@ -71,24 +71,24 @@ class AuthController extends BaseController
 
         $credentials = $request->only('email', 'password');
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return $this->sendError('Email ou mot de passe incorrect', [], 401);
         }
 
         // Vérifier si le compte est actif
-        if (auth()->user()->statut !== 'actif') {
-            auth()->logout();
+        if (auth('api')->user()->statut !== 'actif') {
+            auth('api')->logout();
             return $this->sendError('Votre compte est inactif. Contactez un administrateur.', [], 403);
         }
 
         // Mettre à jour la dernière connexion
-        auth()->user()->update(['derniere_connexion' => now()]);
+        auth('api')->user()->update(['derniere_connexion' => now()]);
 
         return $this->sendResponse([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user(),
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'user' => auth('api')->user(),
         ], 'Connexion réussie');
     }
 
@@ -97,7 +97,7 @@ class AuthController extends BaseController
      */
     public function logout(): JsonResponse
     {
-        auth()->logout();
+        auth('api')->logout();
         return $this->sendSuccess('Déconnexion réussie');
     }
 
@@ -107,9 +107,9 @@ class AuthController extends BaseController
     public function refresh(): JsonResponse
     {
         return $this->sendResponse([
-            'access_token' => auth()->refresh(),
+            'access_token' => auth('api')->refresh(),
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
         ], 'Token rafraîchi');
     }
 
@@ -118,7 +118,7 @@ class AuthController extends BaseController
      */
     public function me(): JsonResponse
     {
-        $user = auth()->user();
+        $user = auth('api')->user();
         
         // Charger la relation selon le rôle
         switch ($user->role) {
