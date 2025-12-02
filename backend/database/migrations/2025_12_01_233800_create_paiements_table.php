@@ -36,11 +36,10 @@ return new class extends Migration
                   ->nullable()
                   ->comment('ID transaction API paiement mobile');
             
-            // Validation (pour espèces validés par agent)
-            $table->foreignId('valide_par')
+            // Justificatif pour virement/chèque (chemin fichier)
+            $table->string('justificatif', 500)
                   ->nullable()
-                  ->constrained('agents')
-                  ->onDelete('set null');
+                  ->comment('Chemin fichier justificatif (virement/chèque)');
             
             // Métadonnées
             $table->json('metadata')

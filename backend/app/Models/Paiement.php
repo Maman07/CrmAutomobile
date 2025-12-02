@@ -16,7 +16,7 @@ class Paiement extends Model
         'date_paiement',
         'statut',
         'reference_externe',
-        'valide_par',
+        'justificatif',
         'metadata',
     ];
 
@@ -25,6 +25,7 @@ class Paiement extends Model
         return [
             'montant' => 'decimal:2',
             'date_paiement' => 'datetime',
+            'justificatif' => 'string',
             'metadata' => 'array',
         ];
     }
@@ -45,13 +46,6 @@ class Paiement extends Model
         return $this->belongsTo(TypePaiement::class);
     }
 
-    /**
-     * Agent qui a validé le paiement (pour espèces)
-     */
-    public function validateur()
-    {
-        return $this->belongsTo(Agent::class, 'valide_par');
-    }
 
     /**
      * Boot method pour marquer facture comme payée

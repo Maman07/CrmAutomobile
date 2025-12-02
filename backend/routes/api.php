@@ -23,6 +23,7 @@ Route::prefix('auth')->group(function () {
 
 // Services publics (consultation catalogue)
 Route::get('services', [\App\Http\Controllers\Api\ServiceController::class, 'index']);
+Route::get('services/by-category', [\App\Http\Controllers\Api\ServiceController::class, 'byCategory']);
 Route::get('services/{id}', [\App\Http\Controllers\Api\ServiceController::class, 'show']);
 
 // ============================================
@@ -36,6 +37,15 @@ Route::middleware('auth:api')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('refresh', [AuthController::class, 'refresh']);
         Route::get('me', [AuthController::class, 'me']);
+    });
+
+    // Notifications (accessible à tous les rôles authentifiés)
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Api\NotificationController::class, 'index']);
+        Route::get('unread-count', [\App\Http\Controllers\Api\NotificationController::class, 'unreadCount']);
+        Route::post('{id}/mark-as-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
+        Route::post('mark-all-as-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
+        Route::delete('{id}', [\App\Http\Controllers\Api\NotificationController::class, 'destroy']);
     });
 
     // ============================================
@@ -72,7 +82,6 @@ Route::middleware('auth:api')->group(function () {
         // Paiements
         Route::post('paiements', [\App\Http\Controllers\Api\Client\ClientPaiementController::class, 'store']);
         Route::get('paiements', [\App\Http\Controllers\Api\Client\ClientPaiementController::class, 'index']);
-        Route::post('paiements/{id}/confirmer', [\App\Http\Controllers\Api\Client\ClientPaiementController::class, 'confirmer']);
         
         // Notifications
         Route::get('notifications', [\App\Http\Controllers\Api\NotificationController::class, 'index']);
@@ -122,9 +131,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('clients/{id}/activer', [\App\Http\Controllers\Api\Agent\AgentClientController::class, 'activer']);
         Route::post('clients/{id}/rejeter', [\App\Http\Controllers\Api\Agent\AgentClientController::class, 'rejeter']);
         
-        // Paiements espèces
-        Route::post('paiements/{id}/valider-especes', [\App\Http\Controllers\Api\Agent\AgentPaiementController::class, 'validerEspeces']);
-        
         // Calendrier
         Route::get('calendrier', [\App\Http\Controllers\Api\Agent\AgentCalendrierController::class, 'index']);
         
@@ -147,6 +153,14 @@ Route::middleware('auth:api')->group(function () {
         
         // Gestion services
         Route::apiResource('services', \App\Http\Controllers\Api\Manager\ManagerServiceController::class);
+        
+        // Gestion paiements (virement/chèque)
+        Route::get('paiements/en-attente', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'enAttente']);
+        Route::get('paiements/historique', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'historique']);
+        Route::get('paiements/{id}', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'show']);
+        Route::get('paiements/{id}/justificatif', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'voirJustificatif']);
+        Route::post('paiements/{id}/confirmer', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'confirmer']);
+        Route::post('paiements/{id}/rejeter', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'rejeter']);
         
         // Rapports
         Route::get('rapports', [\App\Http\Controllers\Api\Manager\ManagerRapportController::class, 'index']);

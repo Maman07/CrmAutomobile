@@ -14,28 +14,28 @@ class TypePaiementSeeder extends Seeder
     {
         $types = [
             [
-                'libelle' => 'Espèces',
-                'description' => 'Paiement en espèces au comptoir.',
-                'actif' => true,
-            ],
-            [
                 'libelle' => 'Wave',
-                'description' => 'Paiement mobile via Wave (Sénégal).',
+                'description' => 'Paiement mobile via Wave (Sénégal). Confirmation automatique via API.',
                 'actif' => true,
             ],
             [
                 'libelle' => 'Orange Money',
-                'description' => 'Paiement mobile via Orange Money.',
+                'description' => 'Paiement mobile via Orange Money. Confirmation automatique via API.',
+                'actif' => true,
+            ],
+            [
+                'libelle' => 'Free Money',
+                'description' => 'Paiement mobile via Free Money. Confirmation automatique via API.',
                 'actif' => true,
             ],
             [
                 'libelle' => 'Virement bancaire',
-                'description' => 'Virement bancaire sur compte professionnel.',
+                'description' => 'Virement bancaire sur compte professionnel. Justificatif requis. Vérification comptable.',
                 'actif' => true,
             ],
             [
                 'libelle' => 'Chèque',
-                'description' => 'Paiement par chèque (entreprises uniquement).',
+                'description' => 'Paiement par chèque (entreprises uniquement). Justificatif requis. Vérification comptable.',
                 'actif' => true,
             ],
         ];
