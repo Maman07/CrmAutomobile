@@ -46,11 +46,9 @@ class ClientPaiementController extends BaseController
             'facture_id' => 'required|exists:factures,id',
             'type_paiement_id' => 'required|exists:types_paiement,id',
             'montant' => 'required|numeric|min:1',
-            'telephone' => 'required_if:type_paiement_id,1,2,3|nullable|string|regex:/^\+221[0-9]{9}$/',
-            'justificatif' => 'required_if:type_paiement_id,4,5|nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'telephone' => 'nullable|string|regex:/^\+221[0-9]{9}$/',
         ], [
             'telephone.regex' => 'Le numéro doit être au format sénégalais : +221XXXXXXXXX',
-            'justificatif.required_if' => 'Le justificatif est obligatoire pour virement/chèque',
         ]);
 
         if ($validator->fails()) {
@@ -88,14 +86,6 @@ class ClientPaiementController extends BaseController
         }
 
         $typePaiement = \App\Models\TypePaiement::find($request->type_paiement_id);
-        $justificatifPath = null;
-
-        // Si virement ou chèque : Upload justificatif
-        if (in_array($typePaiement->id, [4, 5]) && $request->hasFile('justificatif')) {
-            $file = $request->file('justificatif');
-            $filename = 'justificatif_' . $facture->numero . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $justificatifPath = $file->storeAs('justificatifs', $filename, 'public');
-        }
 
         // Créer le paiement
         $paiement = Paiement::create([
@@ -103,31 +93,26 @@ class ClientPaiementController extends BaseController
             'type_paiement_id' => $request->type_paiement_id,
             'montant' => $request->montant,
             'date_paiement' => now(),
-            'statut' => 'en_attente', // Confirmé par API ou comptable
-            'reference_externe' => null, // Sera rempli par callback API
-            'justificatif' => $justificatifPath,
-            'metadata' => json_encode([
+            'statut' => 'en_attente',
+            'reference_externe' => null,
+            'metadata' => [
                 'telephone' => $request->telephone,
                 'type' => $typePaiement->libelle,
-            ]),
+            ],
         ]);
 
-        // SI MOBILE MONEY : Appeler API
+        // SI MOBILE MONEY : Message pour l'utilisateur
         if (in_array($typePaiement->libelle, ['Wave', 'Orange Money', 'Free Money'])) {
-            // TODO: Appeler API du service de paiement mobile
-            // $response = $this->initierPaiementMobile($typePaiement->libelle, $request->telephone, $facture->montant_ttc);
-            
             return $this->sendResponse($paiement, 
-                'Paiement initié. Composez *XXX# sur votre téléphone ' . $request->telephone . ' pour confirmer.', 
+                'Paiement initié. Vous recevrez une notification pour confirmer le paiement.', 
                 201
             );
         }
 
         // SI VIREMENT/CHÈQUE : Attente vérification comptable
         return $this->sendResponse($paiement, 
-            'Paiement enregistré. Votre justificatif sera vérifié sous 24-48h. Vous serez notifié.', 
+            'Paiement enregistré. Il sera vérifié sous 24-48h.', 
             201
         );
     }
 }
-

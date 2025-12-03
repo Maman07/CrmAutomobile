@@ -154,11 +154,10 @@ Route::middleware('auth:api')->group(function () {
         // Gestion services
         Route::apiResource('services', \App\Http\Controllers\Api\Manager\ManagerServiceController::class);
         
-        // Gestion paiements (virement/chèque)
+        // Gestion paiements
         Route::get('paiements/en-attente', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'enAttente']);
         Route::get('paiements/historique', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'historique']);
         Route::get('paiements/{id}', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'show']);
-        Route::get('paiements/{id}/justificatif', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'voirJustificatif']);
         Route::post('paiements/{id}/confirmer', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'confirmer']);
         Route::post('paiements/{id}/rejeter', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'rejeter']);
         

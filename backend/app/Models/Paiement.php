@@ -16,7 +16,6 @@ class Paiement extends Model
         'date_paiement',
         'statut',
         'reference_externe',
-        'justificatif',
         'metadata',
     ];
 
@@ -25,7 +24,6 @@ class Paiement extends Model
         return [
             'montant' => 'decimal:2',
             'date_paiement' => 'datetime',
-            'justificatif' => 'string',
             'metadata' => 'array',
         ];
     }
@@ -45,7 +43,6 @@ class Paiement extends Model
     {
         return $this->belongsTo(TypePaiement::class);
     }
-
 
     /**
      * Boot method pour marquer facture comme payée
@@ -74,7 +71,7 @@ class Paiement extends Model
                 if ($paiement->montant == $facture->montant_ttc) {
                     $facture->marquerPayee();
                     
-                    // 🔓 DÉBLOCAGE : Passer le ticket en "devis_approuve" pour permettre réparation
+                    // DÉBLOCAGE : Passer le ticket en "devis_approuve" pour permettre réparation
                     $ticket = $facture->ticket;
                     if ($ticket && $ticket->statut === 'devis_envoye') {
                         $ticket->update(['statut' => 'devis_approuve']);
@@ -124,4 +121,3 @@ class Paiement extends Model
         return $query->where('statut', 'en_attente');
     }
 }
-

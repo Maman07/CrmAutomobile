@@ -6,20 +6,16 @@ use App\Http\Controllers\Api\BaseController;
 use App\Models\Paiement;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ManagerPaiementController extends BaseController
 {
     /**
-     * Liste des paiements virement/chèque en attente de vérification
+     * Liste des paiements en attente de vérification
      */
     public function enAttente(): JsonResponse
     {
         $paiements = Paiement::where('statut', 'en_attente')
-            ->whereHas('typePaiement', function ($query) {
-                $query->whereIn('libelle', ['Virement bancaire', 'Chèque']);
-            })
             ->with([
                 'facture.ticket.client.user',
                 'facture.ticket.vehicule',
@@ -47,47 +43,11 @@ class ManagerPaiementController extends BaseController
             return $this->sendNotFound('Paiement non trouvé');
         }
 
-        // Ajouter URL du justificatif si existe
-        if ($paiement->justificatif) {
-            $paiement->justificatif_url = Storage::url($paiement->justificatif);
-        }
-
         return $this->sendResponse($paiement, 'Détail du paiement');
     }
 
     /**
-     * Télécharger le justificatif (PDF/image)
-     */
-    public function voirJustificatif(int $id): JsonResponse
-    {
-        $paiement = Paiement::find($id);
-
-        if (!$paiement) {
-            return $this->sendNotFound('Paiement non trouvé');
-        }
-
-        if (!$paiement->justificatif) {
-            return $this->sendError('Aucun justificatif n\'a été uploadé pour ce paiement');
-        }
-
-        // Vérifier que le fichier existe
-        if (!Storage::disk('public')->exists($paiement->justificatif)) {
-            return $this->sendError('Le fichier justificatif est introuvable sur le serveur');
-        }
-
-        // Retourner l'URL publique
-        $url = Storage::url($paiement->justificatif);
-
-        return $this->sendResponse([
-            'justificatif_url' => url($url),
-            'nom_fichier' => basename($paiement->justificatif),
-            'type' => Storage::mimeType('public/' . $paiement->justificatif),
-            'taille' => Storage::size('public/' . $paiement->justificatif),
-        ], 'Justificatif disponible');
-    }
-
-    /**
-     * Confirmer un paiement après vérification bancaire
+     * Confirmer un paiement après vérification
      */
     public function confirmer(Request $request, int $id): JsonResponse
     {
@@ -115,7 +75,7 @@ class ManagerPaiementController extends BaseController
             'statut' => 'confirme',
             'reference_externe' => $request->reference_bancaire,
             'metadata' => array_merge(
-                json_decode($paiement->metadata, true) ?? [],
+                $paiement->metadata ?? [],
                 [
                     'verifie_par' => auth('api')->user()->nom_complet,
                     'date_verification' => now()->toDateTimeString(),
@@ -128,15 +88,13 @@ class ManagerPaiementController extends BaseController
         // 1. Marquer facture comme payée
         // 2. Débloquer le ticket (statut → "devis_approuve")
 
-        // TODO: Notification au client et au technicien
-
         return $this->sendResponse($paiement, 
             'Paiement confirmé avec succès. La facture est maintenant payée et le ticket est débloqué pour réparation.'
         );
     }
 
     /**
-     * Rejeter un paiement (justificatif invalide)
+     * Rejeter un paiement
      */
     public function rejeter(Request $request, int $id): JsonResponse
     {
@@ -162,7 +120,7 @@ class ManagerPaiementController extends BaseController
         $paiement->update([
             'statut' => 'echoue',
             'metadata' => array_merge(
-                json_decode($paiement->metadata, true) ?? [],
+                $paiement->metadata ?? [],
                 [
                     'rejete_par' => auth('api')->user()->nom_complet,
                     'date_rejet' => now()->toDateTimeString(),
@@ -171,10 +129,8 @@ class ManagerPaiementController extends BaseController
             ),
         ]);
 
-        // TODO: Notification au client pour qu'il soumette un nouveau justificatif
-
         return $this->sendSuccess(
-            'Paiement rejeté. Le client va être notifié et devra soumettre un nouveau justificatif.'
+            'Paiement rejeté. Le client sera notifié.'
         );
     }
 
@@ -213,4 +169,3 @@ class ManagerPaiementController extends BaseController
         return $this->sendPaginated($paiements, 'Historique des paiements');
     }
 }
-

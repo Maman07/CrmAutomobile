@@ -36,11 +36,6 @@ return new class extends Migration
                   ->nullable()
                   ->comment('ID transaction API paiement mobile');
             
-            // Justificatif pour virement/chèque (chemin fichier)
-            $table->string('justificatif', 500)
-                  ->nullable()
-                  ->comment('Chemin fichier justificatif (virement/chèque)');
-            
             // Métadonnées
             $table->json('metadata')
                   ->nullable()
