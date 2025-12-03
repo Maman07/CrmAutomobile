@@ -16,7 +16,12 @@ use App\Http\Controllers\Api\Auth\AuthController;
 
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
-    Route::post('login', [AuthController::class, 'login']);
+    
+    // Login avec rate limiting strict (anti brute-force)
+    Route::middleware('throttle:login')->group(function () {
+        Route::post('login', [AuthController::class, 'login']);
+    });
+    
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
 });
@@ -30,7 +35,7 @@ Route::get('services/{id}', [\App\Http\Controllers\Api\ServiceController::class,
 // 2. ROUTES AUTHENTIFIÉES (JWT Required)
 // ============================================
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api', 'throttle:api'])->group(function () {
     
     // Auth (logout, refresh token, user info)
     Route::prefix('auth')->group(function () {

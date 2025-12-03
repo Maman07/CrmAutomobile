@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);
+        
+        // Forcer JSON sur toutes les routes API
+        $middleware->prependToGroup('api', \App\Http\Middleware\ForceJsonResponse::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
