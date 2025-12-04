@@ -1,0 +1,1431 @@
+{
+	"info": {
+		"_postman_id": "autotech-crm-api-v1",
+		"name": "AUTOTECH CRM API - Complete Collection",
+		"description": "Collection complète pour tester l'API du CRM Automobile AUTOTECH SERVICES\n\n**Backend:** Laravel 11 + PostgreSQL + JWT\n**Roles:** Client, Agent, Technicien, Manager\n\n**Variables à configurer:**\n- `base_url`: http://localhost:8000\n- `token`: (sera rempli automatiquement après login)\n- `client_id`, `ticket_id`, `devis_id`, `facture_id`, `paiement_id`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "🔐 Authentication",
+			"item": [
+				{
+					"name": "Register Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.user) {",
+									"        pm.environment.set('user_id', jsonData.data.user.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nom\": \"Diop\",\n    \"prenom\": \"Moussa\",\n    \"email\": \"moussa.diop@example.com\",\n    \"telephone\": \"+221771234567\",\n    \"password\": \"Password123!\",\n    \"password_confirmation\": \"Password123!\",\n    \"adresse\": \"Sicap Liberté 6, Dakar\",\n    \"ville\": \"Dakar\",\n    \"type_client\": \"particulier\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.access_token) {",
+									"        pm.environment.set('token', jsonData.data.access_token);",
+									"        pm.environment.set('user_id', jsonData.data.user.id);",
+									"        console.log('Token saved:', jsonData.data.access_token);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"client@autotech.sn\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login Technicien",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.access_token) {",
+									"        pm.environment.set('token', jsonData.data.access_token);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"technicien@autotech.sn\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login Agent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.access_token) {",
+									"        pm.environment.set('token', jsonData.data.access_token);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"agent@autotech.sn\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login Manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.access_token) {",
+									"        pm.environment.set('token', jsonData.data.access_token);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"manager@autotech.sn\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Get User Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "me"]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "logout"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🔓 Public - Services",
+			"item": [
+				{
+					"name": "Liste des services",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/services",
+							"host": ["{{base_url}}"],
+							"path": ["api", "services"]
+						}
+					}
+				},
+				{
+					"name": "Services par catégorie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/services/by-category",
+							"host": ["{{base_url}}"],
+							"path": ["api", "services", "by-category"]
+						}
+					}
+				},
+				{
+					"name": "Détail service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/services/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "services", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 CLIENT - Dashboard & Profile",
+			"item": [
+				{
+					"name": "Dashboard Client",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 CLIENT - Véhicules",
+			"item": [
+				{
+					"name": "Liste véhicules",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/vehicules",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "vehicules"]
+						}
+					}
+				},
+				{
+					"name": "Créer véhicule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('vehicule_id', jsonData.data.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"immatriculation\": \"DK-1234-AB\",\n    \"marque\": \"Toyota\",\n    \"modele\": \"Corolla\",\n    \"annee\": 2020,\n    \"couleur\": \"Blanc\",\n    \"numero_serie\": \"VIN123456789\",\n    \"type_carburant\": \"essence\",\n    \"kilometrage\": 45000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/client/vehicules",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "vehicules"]
+						}
+					}
+				},
+				{
+					"name": "Détail véhicule",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/vehicules/{{vehicule_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "vehicules", "{{vehicule_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Historique véhicule",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/vehicules/{{vehicule_id}}/historique",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "vehicules", "{{vehicule_id}}", "historique"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 CLIENT - Tickets",
+			"item": [
+				{
+					"name": "Liste tickets",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/tickets",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "tickets"]
+						}
+					}
+				},
+				{
+					"name": "Créer ticket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('ticket_id', jsonData.data.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicule_id\": {{vehicule_id}},\n    \"description\": \"Problème de démarrage le matin. Le moteur tousse et met du temps à démarrer.\",\n    \"kilometrage_actuel\": 45500,\n    \"priorite\": \"moyenne\",\n    \"services\": [1, 2, 6]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/client/tickets",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "tickets"]
+						}
+					}
+				},
+				{
+					"name": "Détail ticket",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/tickets/{{ticket_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "tickets", "{{ticket_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Suivi ticket (Timeline)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/tickets/{{ticket_id}}/suivi",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "tickets", "{{ticket_id}}", "suivi"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 CLIENT - Devis",
+			"item": [
+				{
+					"name": "Liste devis",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/devis",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "devis"]
+						}
+					}
+				},
+				{
+					"name": "Détail devis",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/devis/{{devis_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "devis", "{{devis_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Approuver devis",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.facture) {",
+									"        pm.environment.set('facture_id', jsonData.data.facture.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/devis/{{devis_id}}/approuver",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "devis", "{{devis_id}}", "approuver"]
+						}
+					}
+				},
+				{
+					"name": "Refuser devis",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"motif\": \"Le prix est trop élevé pour mon budget actuel. Je souhaite obtenir un devis révisé.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/client/devis/{{devis_id}}/refuser",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "devis", "{{devis_id}}", "refuser"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 CLIENT - Factures",
+			"item": [
+				{
+					"name": "Liste factures",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/factures",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "factures"]
+						}
+					}
+				},
+				{
+					"name": "Détail facture",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/factures/{{facture_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "factures", "{{facture_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 CLIENT - Paiements",
+			"item": [
+				{
+					"name": "Liste paiements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/client/paiements",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "paiements"]
+						}
+					}
+				},
+				{
+					"name": "Payer Wave",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('paiement_id', jsonData.data.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"facture_id\": {{facture_id}},\n    \"type_paiement_id\": 1,\n    \"montant\": 150000,\n    \"telephone\": \"+221771234567\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/client/paiements",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "paiements"]
+						}
+					}
+				},
+				{
+					"name": "Payer Orange Money",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"facture_id\": {{facture_id}},\n    \"type_paiement_id\": 2,\n    \"montant\": 150000,\n    \"telephone\": \"+221771234567\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/client/paiements",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "paiements"]
+						}
+					}
+				},
+				{
+					"name": "Payer Free Money",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"facture_id\": {{facture_id}},\n    \"type_paiement_id\": 3,\n    \"montant\": 150000,\n    \"telephone\": \"+221771234567\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/client/paiements",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "paiements"]
+						}
+					}
+				},
+				{
+					"name": "Payer Virement (avec justificatif)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "facture_id",
+									"value": "{{facture_id}}",
+									"type": "text"
+								},
+								{
+									"key": "type_paiement_id",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "montant",
+									"value": "150000",
+									"type": "text"
+								},
+								{
+									"key": "justificatif",
+									"type": "file",
+									"src": "/path/to/justificatif.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/client/paiements",
+							"host": ["{{base_url}}"],
+							"path": ["api", "client", "paiements"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🔧 TECHNICIEN - Dashboard",
+			"item": [
+				{
+					"name": "Dashboard Technicien",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/technicien/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technicien", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🔧 TECHNICIEN - Tickets",
+			"item": [
+				{
+					"name": "Mes tickets assignés",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/technicien/tickets",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technicien", "tickets"]
+						}
+					}
+				},
+				{
+					"name": "Détail ticket",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/technicien/tickets/{{ticket_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technicien", "tickets", "{{ticket_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Passer en diagnostic",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"statut\": \"en_diagnostic\",\n    \"commentaire\": \"Début du diagnostic du véhicule\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/technicien/tickets/{{ticket_id}}/statut",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technicien", "tickets", "{{ticket_id}}", "statut"]
+						}
+					}
+				},
+				{
+					"name": "Passer en réparation (BLOQUÉ si pas payé)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"statut\": \"en_reparation\",\n    \"commentaire\": \"Début des réparations\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/technicien/tickets/{{ticket_id}}/statut",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technicien", "tickets", "{{ticket_id}}", "statut"]
+						}
+					}
+				},
+				{
+					"name": "Terminer réparation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"statut\": \"termine\",\n    \"commentaire\": \"Réparations terminées avec succès\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/technicien/tickets/{{ticket_id}}/statut",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technicien", "tickets", "{{ticket_id}}", "statut"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🔧 TECHNICIEN - Devis",
+			"item": [
+				{
+					"name": "Créer devis",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('devis_id', jsonData.data.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Diagnostic complet effectué. Remplacement nécessaire de plusieurs pièces.\",\n    \"lignes\": [\n        {\n            \"designation\": \"Batterie 12V 70Ah\",\n            \"type\": \"piece\",\n            \"quantite\": 1,\n            \"prix_unitaire\": 45000\n        },\n        {\n            \"designation\": \"Filtre à air\",\n            \"type\": \"piece\",\n            \"quantite\": 1,\n            \"prix_unitaire\": 8000\n        },\n        {\n            \"designation\": \"Bougies d'allumage (x4)\",\n            \"type\": \"piece\",\n            \"quantite\": 4,\n            \"prix_unitaire\": 3500\n        },\n        {\n            \"designation\": \"Main d'œuvre diagnostic\",\n            \"type\": \"main_oeuvre\",\n            \"quantite\": 2,\n            \"prix_unitaire\": 15000\n        },\n        {\n            \"designation\": \"Main d'œuvre remplacement pièces\",\n            \"type\": \"main_oeuvre\",\n            \"quantite\": 3,\n            \"prix_unitaire\": 12000\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/technicien/tickets/{{ticket_id}}/devis",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technicien", "tickets", "{{ticket_id}}", "devis"]
+						}
+					}
+				},
+				{
+					"name": "Modifier devis",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Devis révisé suite à demande client\",\n    \"lignes\": [\n        {\n            \"designation\": \"Batterie 12V 70Ah\",\n            \"type\": \"piece\",\n            \"quantite\": 1,\n            \"prix_unitaire\": 42000\n        },\n        {\n            \"designation\": \"Main d'œuvre\",\n            \"type\": \"main_oeuvre\",\n            \"quantite\": 2,\n            \"prix_unitaire\": 15000\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/technicien/devis/{{devis_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "technicien", "devis", "{{devis_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👔 AGENT - Dashboard",
+			"item": [
+				{
+					"name": "Dashboard Agent",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/agent/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["api", "agent", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👔 AGENT - Tickets",
+			"item": [
+				{
+					"name": "Liste tous les tickets",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/agent/tickets",
+							"host": ["{{base_url}}"],
+							"path": ["api", "agent", "tickets"]
+						}
+					}
+				},
+				{
+					"name": "Affecter ticket à technicien",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"technicien_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/agent/tickets/{{ticket_id}}/affecter",
+							"host": ["{{base_url}}"],
+							"path": ["api", "agent", "tickets", "{{ticket_id}}", "affecter"]
+						}
+					}
+				},
+				{
+					"name": "Réaffecter ticket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"technicien_id\": 2,\n    \"motif\": \"Le technicien précédent est surchargé. Réaffectation pour accélérer le traitement.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/agent/tickets/{{ticket_id}}/reaffecter",
+							"host": ["{{base_url}}"],
+							"path": ["api", "agent", "tickets", "{{ticket_id}}", "reaffecter"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👔 AGENT - Clients",
+			"item": [
+				{
+					"name": "Clients en attente d'activation",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/agent/clients/en-attente",
+							"host": ["{{base_url}}"],
+							"path": ["api", "agent", "clients", "en-attente"]
+						}
+					}
+				},
+				{
+					"name": "Activer client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/agent/clients/{{client_id}}/activer",
+							"host": ["{{base_url}}"],
+							"path": ["api", "agent", "clients", "{{client_id}}", "activer"]
+						}
+					}
+				},
+				{
+					"name": "Rejeter client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"motif\": \"Informations incomplètes. Veuillez fournir une pièce d'identité valide.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/agent/clients/{{client_id}}/rejeter",
+							"host": ["{{base_url}}"],
+							"path": ["api", "agent", "clients", "{{client_id}}", "rejeter"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "💼 MANAGER - Dashboard",
+			"item": [
+				{
+					"name": "Dashboard Manager",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/manager/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["api", "manager", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "💼 MANAGER - Paiements",
+			"item": [
+				{
+					"name": "Paiements en attente",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/manager/paiements/en-attente",
+							"host": ["{{base_url}}"],
+							"path": ["api", "manager", "paiements", "en-attente"]
+						}
+					}
+				},
+				{
+					"name": "Détail paiement",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/manager/paiements/{{paiement_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "manager", "paiements", "{{paiement_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Voir justificatif",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/manager/paiements/{{paiement_id}}/justificatif",
+							"host": ["{{base_url}}"],
+							"path": ["api", "manager", "paiements", "{{paiement_id}}", "justificatif"]
+						}
+					}
+				},
+				{
+					"name": "Confirmer paiement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reference_bancaire\": \"VIR-2024-001234\",\n    \"commentaire\": \"Virement vérifié et validé\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/manager/paiements/{{paiement_id}}/confirmer",
+							"host": ["{{base_url}}"],
+							"path": ["api", "manager", "paiements", "{{paiement_id}}", "confirmer"]
+						}
+					}
+				},
+				{
+					"name": "Rejeter paiement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"motif\": \"Le justificatif fourni ne correspond pas au montant de la facture.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/manager/paiements/{{paiement_id}}/rejeter",
+							"host": ["{{base_url}}"],
+							"path": ["api", "manager", "paiements", "{{paiement_id}}", "rejeter"]
+						}
+					}
+				},
+				{
+					"name": "Historique paiements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/manager/paiements/historique",
+							"host": ["{{base_url}}"],
+							"path": ["api", "manager", "paiements", "historique"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🔔 Notifications",
+			"item": [
+				{
+					"name": "Liste notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications"]
+						}
+					}
+				},
+				{
+					"name": "Nombre non lues",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/unread-count",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "unread-count"]
+						}
+					}
+				},
+				{
+					"name": "Marquer comme lue",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/1/mark-as-read",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "1", "mark-as-read"]
+						}
+					}
+				},
+				{
+					"name": "Marquer toutes comme lues",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/mark-all-as-read",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "mark-all-as-read"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "client_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "vehicule_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ticket_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "devis_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "facture_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "paiement_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+
