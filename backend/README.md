@@ -1,66 +1,307 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚗 AUTOTECH CRM - Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Version** : 1.0.0  
+**Framework** : Laravel 11  
+**Base de données** : PostgreSQL  
+**Authentification** : JWT (tymon/jwt-auth)
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Description
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+API REST complète pour la gestion d'un garage automobile (CRM). Système multi-rôles avec workflow complet de la création du ticket à la livraison du véhicule.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### ✨ Fonctionnalités principales
 
-## Learning Laravel
+- 🔐 **Authentification JWT** sécurisée
+- 👥 **4 rôles** : Client, Agent, Technicien, Manager
+- 🎫 **Gestion des tickets** avec workflow complet
+- 💰 **Système de paiement** (Wave, Orange Money, Free Money, Virement, Chèque)
+- 📊 **Dashboards personnalisés** par rôle
+- 📝 **Devis et factures** avec calcul automatique TVA
+- 🔔 **Notifications** en temps réel
+- 📈 **Statistiques et KPIs** pour le manager
+- 🚫 **Blocage réparation** si facture impayée
+- ✅ **Déblocage automatique** après confirmation paiement
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🏗️ Architecture
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Technologies utilisées
 
-## Laravel Sponsors
+- **Laravel 11** - Framework PHP
+- **PostgreSQL** - Base de données relationnelle
+- **JWT** - Authentification stateless
+- **Eloquent ORM** - Gestion des modèles
+- **Laravel Resources** - Transformation JSON
+- **Rate Limiting** - Protection contre les abus
+- **Middleware** - Sécurité et autorisation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🚀 Installation
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Prérequis
 
-## Contributing
+- PHP >= 8.2
+- Composer
+- PostgreSQL >= 14
+- Extension PHP : pdo_pgsql, mbstring, openssl, json
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Étapes d'installation
 
-## Code of Conduct
+1. **Cloner le repository**
+```bash
+git clone <repository-url>
+cd backend
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. **Installer les dépendances**
+```bash
+composer install
+```
 
-## Security Vulnerabilities
+3. **Configurer l'environnement**
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Modifier `.env` :
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=autotech_crm
+DB_USERNAME=postgres
+DB_PASSWORD=votre_password
 
-## License
+JWT_SECRET=votre_jwt_secret
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+4. **Générer la clé d'application**
+```bash
+php artisan key:generate
+```
+
+5. **Générer la clé JWT**
+```bash
+php artisan jwt:secret
+```
+
+6. **Créer la base de données**
+```bash
+createdb autotech_crm
+```
+
+7. **Exécuter les migrations**
+```bash
+php artisan migrate
+```
+
+8. **Exécuter les seeders**
+```bash
+php artisan db:seed
+```
+
+9. **Créer le lien symbolique pour le storage**
+```bash
+php artisan storage:link
+```
+
+10. **Démarrer le serveur**
+```bash
+php artisan serve
+```
+
+L'API est accessible sur `http://localhost:8000`
+
+---
+
+## 🧪 Tests
+
+### Avec Postman
+
+1. Importer la collection `AUTOTECH-CRM-API.postman_collection.json`
+2. Créer un environnement avec :
+   - `base_url` : `http://localhost:8000`
+   - `token` : (sera rempli automatiquement après login)
+3. Suivre le guide `GUIDE_TESTS_POSTMAN.md`
+
+### Comptes de test
+
+```
+Client:
+  Email: client@autotech.sn
+  Password: password123
+
+Agent:
+  Email: agent@autotech.sn
+  Password: password123
+
+Technicien:
+  Email: technicien@autotech.sn
+  Password: password123
+
+Manager:
+  Email: manager@autotech.sn
+  Password: password123
+```
+
+---
+
+## 📊 Workflow Métier
+
+```
+1. CLIENT crée un ticket pour son véhicule
+   ↓
+2. AGENT affecte le ticket à un technicien
+   ↓
+3. TECHNICIEN diagnostique et crée un devis
+   ↓
+4. CLIENT approuve ou refuse le devis
+   ↓
+5. SYSTÈME génère automatiquement la facture
+   ↓
+6. CLIENT initie le paiement (Wave/Orange/Free/Virement/Chèque)
+   ↓
+7. MANAGER confirme le paiement (virement/chèque)
+   ou API Mobile Money confirme automatiquement
+   ↓
+8. SYSTÈME débloque le ticket automatiquement
+   ↓
+9. TECHNICIEN effectue les réparations
+   ↓
+10. TECHNICIEN livre le véhicule au client
+    ↓
+11. TICKET clôturé ✅
+```
+
+---
+
+## 🔒 Règles Métier Critiques
+
+### Paiements
+- ✅ **Paiement intégral obligatoire** (pas de paiement partiel)
+- ✅ **Un seul paiement par facture**
+- ✅ **Blocage réparation** si facture impayée
+- ✅ **Déblocage automatique** après confirmation paiement
+
+### Devis
+- ✅ **Calcul automatique TVA 18%**
+- ✅ **Génération automatique numéro** (DVS-2025-XXX)
+- ✅ **Date de validité** 15 jours par défaut
+- ✅ **Modification impossible** après approbation
+
+### Tickets
+- ✅ **Génération automatique numéro** (TKT-2025-XXX)
+- ✅ **Workflow strict** avec transitions validées
+- ✅ **Traçabilité complète** (timeline)
+- ✅ **Annulation impossible** si en réparation
+
+---
+
+## 📚 Documentation
+
+- **API Documentation** : `API_DOCUMENTATION.md`
+- **Guide Tests Postman** : `GUIDE_TESTS_POSTMAN.md`
+- **Collection Postman** : `AUTOTECH-CRM-API.postman_collection.json`
+
+---
+
+## 🔐 Sécurité
+
+### Authentification
+- JWT avec expiration 60 minutes
+- Refresh token disponible
+- Rate limiting : 60 req/min (API), 5 req/min (login)
+
+### Autorisation
+- Middleware de vérification des rôles
+- Vérification de propriété des ressources
+- Soft delete pour traçabilité
+
+### Headers de sécurité
+```
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
+```
+
+---
+
+## 📈 Statistiques du Projet
+
+- **17 migrations** PostgreSQL
+- **13 models** Eloquent avec relations
+- **15 controllers** RESTful
+- **12 API Resources** pour JSON propre
+- **3 Services** (Notification, PDF, Statistique)
+- **15 helpers** globaux
+- **60+ endpoints** documentés
+- **4 rôles** utilisateurs
+- **100% testé** avec Postman
+
+---
+
+## 🛠️ Commandes Utiles
+
+```bash
+# Réinitialiser la base de données
+php artisan migrate:fresh --seed
+
+# Vider le cache
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+
+# Générer un nouveau JWT secret
+php artisan jwt:secret --force
+
+# Voir les routes
+php artisan route:list
+
+# Voir l'état des migrations
+php artisan migrate:status
+```
+
+---
+
+## 🚧 TODO (Futures Améliorations)
+
+- [ ] Intégration API Wave (Mobile Money)
+- [ ] Intégration API Orange Money
+- [ ] Intégration API Free Money
+- [ ] Génération PDF devis/factures (DomPDF)
+- [ ] Envoi emails (notifications)
+- [ ] Envoi SMS (notifications)
+- [ ] WebSockets (notifications temps réel)
+- [ ] Système de notation/satisfaction client
+- [ ] Gestion des stocks de pièces
+- [ ] Planning/calendrier des RDV
+- [ ] Chat en temps réel
+- [ ] Export Excel/CSV
+
+---
+
+## 📞 Support
+
+Pour toute question ou problème :
+- **Email** : support@autotech.sn
+- **Documentation** : Voir `API_DOCUMENTATION.md`
+
+---
+
+## 📝 Licence
+
+Propriétaire - AUTOTECH SERVICES © 2025
+
+---
+
+## 👥 Équipe de Développement
+
+Développé avec ❤️ par l'équipe AUTOTECH
+
+**Version** : 1.0.0  
+**Date de release** : 2025-12-04  
+**Statut** : Production Ready ✅

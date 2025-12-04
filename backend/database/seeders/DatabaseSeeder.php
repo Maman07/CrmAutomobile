@@ -38,9 +38,9 @@ class DatabaseSeeder extends Seeder
         $this->command->info('   - 10 Paramètres système');
         $this->command->info('');
         $this->command->info('🔐 Connexions par défaut :');
-        $this->command->info('   Manager    : manager@autotech.sn / password');
-        $this->command->info('   Agent      : agent1@autotech.sn / password');
-        $this->command->info('   Technicien : technicien1@autotech.sn / password');
-        $this->command->info('   Client     : client1@autotech.sn / password');
+        $this->command->info('   Manager    : manager@autotech.sn / password123');
+        $this->command->info('   Agent      : agent@autotech.sn / password123');
+        $this->command->info('   Technicien : technicien@autotech.sn / password123');
+        $this->command->info('   Client     : client@autotech.sn / password123');
     }
 }

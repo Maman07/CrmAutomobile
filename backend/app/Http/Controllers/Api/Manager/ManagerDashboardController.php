@@ -63,9 +63,9 @@ class ManagerDashboardController extends BaseController
             'factures_impayees_nombre' => Facture::where('statut', 'en_attente')->count(),
         ];
 
-        // Évolution tickets (6 derniers mois)
+        // Évolution tickets (6 derniers mois) - PostgreSQL compatible
         $evolutionTickets = TicketIntervention::select(
-                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as mois'),
+                DB::raw("TO_CHAR(created_at, 'YYYY-MM') as mois"),
                 DB::raw('COUNT(*) as total')
             )
             ->where('created_at', '>=', now()->subMonths(6))
@@ -73,9 +73,9 @@ class ManagerDashboardController extends BaseController
             ->orderBy('mois', 'asc')
             ->get();
 
-        // Évolution CA (6 derniers mois)
+        // Évolution CA (6 derniers mois) - PostgreSQL compatible
         $evolutionCA = Facture::select(
-                DB::raw('DATE_FORMAT(date_paiement, "%Y-%m") as mois'),
+                DB::raw("TO_CHAR(date_paiement, 'YYYY-MM') as mois"),
                 DB::raw('SUM(montant_ttc) as total')
             )
             ->where('statut', 'payee')
