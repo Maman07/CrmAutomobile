@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Models\Paiement;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ManagerPaiementController extends BaseController
@@ -43,7 +44,42 @@ class ManagerPaiementController extends BaseController
             return $this->sendNotFound('Paiement non trouvé');
         }
 
+        // Ajouter URL du justificatif si existe
+        if ($paiement->justificatif) {
+            $paiement->justificatif_url = Storage::url($paiement->justificatif);
+        }
+
         return $this->sendResponse($paiement, 'Détail du paiement');
+    }
+
+    /**
+     * Télécharger le justificatif (PDF/image)
+     */
+    public function voirJustificatif(int $id): JsonResponse
+    {
+        $paiement = Paiement::find($id);
+
+        if (!$paiement) {
+            return $this->sendNotFound('Paiement non trouvé');
+        }
+
+        if (!$paiement->justificatif) {
+            return $this->sendError('Aucun justificatif n\'a été uploadé pour ce paiement');
+        }
+
+        // Vérifier que le fichier existe
+        if (!Storage::disk('public')->exists($paiement->justificatif)) {
+            return $this->sendError('Le fichier justificatif est introuvable sur le serveur');
+        }
+
+        // Retourner l'URL publique
+        $url = Storage::url($paiement->justificatif);
+        return $this->sendResponse([
+            'justificatif_url' => url($url),
+            'nom_fichier' => basename($paiement->justificatif),
+            'type' => Storage::mimeType('public/' . $paiement->justificatif),
+            'taille' => Storage::size('public/' . $paiement->justificatif),
+        ], 'Justificatif disponible');
     }
 
     /**

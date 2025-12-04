@@ -163,6 +163,7 @@ Route::middleware(['auth:api', 'throttle:api'])->group(function () {
         Route::get('paiements/en-attente', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'enAttente']);
         Route::get('paiements/historique', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'historique']);
         Route::get('paiements/{id}', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'show']);
+        Route::get('paiements/{id}/justificatif', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'voirJustificatif']);
         Route::post('paiements/{id}/confirmer', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'confirmer']);
         Route::post('paiements/{id}/rejeter', [\App\Http\Controllers\Api\Manager\ManagerPaiementController::class, 'rejeter']);
         

@@ -46,9 +46,13 @@ class ClientPaiementController extends BaseController
             'facture_id' => 'required|exists:factures,id',
             'type_paiement_id' => 'required|exists:types_paiement,id',
             'montant' => 'required|numeric|min:1',
-            'telephone' => 'nullable|string|regex:/^\+221[0-9]{9}$/',
+            'telephone' => 'required_if:type_paiement_id,1,2,3|nullable|string|regex:/^\+221[0-9]{9}$/',
+            'justificatif' => 'required_if:type_paiement_id,4,5|nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ], [
             'telephone.regex' => 'Le numéro doit être au format sénégalais : +221XXXXXXXXX',
+            'justificatif.required_if' => 'Le justificatif est obligatoire pour virement/chèque',
+            'justificatif.mimes' => 'Le justificatif doit être un fichier PDF, JPG, JPEG ou PNG',
+            'justificatif.max' => 'Le justificatif ne doit pas dépasser 5 Mo',
         ]);
 
         if ($validator->fails()) {
@@ -87,6 +91,14 @@ class ClientPaiementController extends BaseController
 
         $typePaiement = \App\Models\TypePaiement::find($request->type_paiement_id);
 
+        // Gérer l'upload du justificatif (virement/chèque)
+        $justificatifPath = null;
+        if (in_array($typePaiement->id, [4, 5]) && $request->hasFile('justificatif')) {
+            $file = $request->file('justificatif');
+            $filename = 'justificatif_' . $facture->numero . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $justificatifPath = $file->storeAs('justificatifs', $filename, 'public');
+        }
+
         // Créer le paiement
         $paiement = Paiement::create([
             'facture_id' => $request->facture_id,
@@ -95,6 +107,7 @@ class ClientPaiementController extends BaseController
             'date_paiement' => now(),
             'statut' => 'en_attente',
             'reference_externe' => null,
+            'justificatif' => $justificatifPath,
             'metadata' => [
                 'telephone' => $request->telephone,
                 'type' => $typePaiement->libelle,
@@ -111,7 +124,7 @@ class ClientPaiementController extends BaseController
 
         // SI VIREMENT/CHÈQUE : Attente vérification comptable
         return $this->sendResponse($paiement, 
-            'Paiement enregistré. Il sera vérifié sous 24-48h.', 
+            'Paiement enregistré. Votre justificatif sera vérifié sous 24-48h. Vous serez notifié.', 
             201
         );
     }

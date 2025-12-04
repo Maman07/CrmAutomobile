@@ -16,6 +16,7 @@ class Paiement extends Model
         'date_paiement',
         'statut',
         'reference_externe',
+        'justificatif',
         'metadata',
     ];
 
@@ -24,6 +25,7 @@ class Paiement extends Model
         return [
             'montant' => 'decimal:2',
             'date_paiement' => 'datetime',
+            'justificatif' => 'string',
             'metadata' => 'array',
         ];
     }

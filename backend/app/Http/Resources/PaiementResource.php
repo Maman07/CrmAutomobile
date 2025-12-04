@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class PaiementResource extends JsonResource
 {
@@ -16,6 +17,8 @@ class PaiementResource extends JsonResource
             'date_paiement' => $this->date_paiement?->format('Y-m-d H:i:s'),
             'statut' => $this->statut,
             'reference_externe' => $this->reference_externe,
+            'justificatif' => $this->justificatif,
+            'justificatif_url' => $this->justificatif ? url(Storage::url($this->justificatif)) : null,
             
             // Indicateurs
             'est_confirme' => $this->isConfirme(),
