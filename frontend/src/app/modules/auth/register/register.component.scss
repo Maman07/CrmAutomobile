@@ -1,0 +1,270 @@
+// Hérite des styles du login
+.register-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e2a5e 0%, #2d3e7f 100%);
+  padding: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.register-card-wrapper {
+  width: 100%;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 95vh;
+  justify-content: center;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 0;
+  padding: 0;
+  
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(255, 87, 34, 0.4);
+    white-space: nowrap;
+    
+    i {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    
+    span {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.register-card {
+  background: white !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 12px !important;
+  
+  ::ng-deep mat-card-content {
+    padding: 20px 24px !important;
+    background: white !important;
+  }
+  
+  h2 {
+    color: #1e2a5e !important;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  
+  .subtitle {
+    color: #5f6368 !important;
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+}
+
+form {
+  .full-width {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 12px;
+    
+    .half-width {
+      flex: 1;
+      margin-bottom: 8px;
+    }
+  }
+  
+  mat-form-field {
+    ::ng-deep {
+      // Fond blanc avec bordure personnalisée
+      .mat-mdc-text-field-wrapper {
+        background-color: white !important;
+        border: 1.5px solid #1e2a5e !important;
+        border-radius: 8px !important;
+        overflow: hidden;
+      }
+      
+      // Supprimer la ligne de focus par défaut
+      .mat-mdc-form-field-focus-overlay {
+        display: none !important;
+      }
+      
+      // Bordure au hover (orange)
+      .mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
+        border-color: #ff5722 !important;
+      }
+      
+      // Bordure au focus (orange plus épais)
+      .mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+        border-color: #ff5722 !important;
+        border-width: 2px !important;
+      }
+      
+      // Texte saisi en bleu foncé
+      input.mat-mdc-input-element {
+        color: #1e2a5e !important;
+        font-weight: 500 !important;
+        font-size: 15px !important;
+      }
+      
+      // Label
+      .mdc-floating-label {
+        color: #5f6368 !important;
+      }
+      
+      .mdc-floating-label--float-above {
+        color: #1e2a5e !important;
+      }
+      
+      // Icônes prefix
+      .mat-mdc-form-field-icon-prefix {
+        color: #5f6368 !important;
+        margin-right: 8px !important;
+      }
+      
+      // Icônes suffix
+      .mat-mdc-form-field-icon-suffix {
+        color: #5f6368 !important;
+      }
+      
+      // Messages d'erreur
+      .mat-mdc-form-field-error {
+        color: #f44336 !important;
+        font-size: 12px !important;
+      }
+      
+      // Réduire l'espacement sous le champ
+      .mat-mdc-form-field-subscript-wrapper {
+        margin-top: 4px !important;
+      }
+    }
+  }
+}
+
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  
+  i {
+    color: #2196f3;
+    font-size: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  
+  p {
+    margin: 0;
+    color: #1565c0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}
+
+.btn {
+  margin-top: 4px;
+  
+  mat-spinner {
+    margin-right: 8px;
+  }
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+  
+  p {
+    color: #5f6368;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #3949ab;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 13px;
+    
+    &:hover {
+      color: #4d5cbf;
+      gap: 10px;
+    }
+  }
+}
+
+.footer {
+  text-align: center;
+  margin-top: 12px;
+  padding: 8px 0;
+  
+  p {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 12px;
+    margin: 0;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .register-card-wrapper {
+    max-width: 100%;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    
+    .half-width {
+      width: 100%;
+    }
+  }
+  
+  .register-card {
+    ::ng-deep mat-card-content {
+      padding: 20px 16px !important;
+    }
+  }
+  
+  .logo-section .logo {
+    padding: 10px 20px;
+    
+    i {
+      font-size: 20px;
+    }
+    
+    span {
+      font-size: 18px;
+    }
+  }
+}
+

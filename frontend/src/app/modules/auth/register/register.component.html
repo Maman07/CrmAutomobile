@@ -1,0 +1,187 @@
+<div class="register-container">
+  <div class="register-card-wrapper">
+    <!-- Logo AUTOTECH -->
+    <div class="logo-section">
+      <div class="logo">
+        <i class="fas fa-car"></i>
+        <span>AUTOTECH</span>
+      </div>
+    </div>
+
+    <!-- Carte d'inscription -->
+    <mat-card class="register-card">
+      <mat-card-content>
+        <h2>Créer un compte</h2>
+        <p class="subtitle">Rejoignez AUTOTECH SERVICES gratuitement</p>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <!-- Nom -->
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Nom</mat-label>
+              <input 
+                matInput 
+                formControlName="nom"
+                autocomplete="family-name"
+              >
+              <mat-icon matPrefix>person</mat-icon>
+              @if (registerForm.get('nom')?.invalid && registerForm.get('nom')?.touched) {
+                <mat-error>{{ getErrorMessage('nom') }}</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Prénom -->
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Prénom</mat-label>
+              <input 
+                matInput 
+                formControlName="prenom"
+                autocomplete="given-name"
+              >
+              <mat-icon matPrefix>person_outline</mat-icon>
+              @if (registerForm.get('prenom')?.invalid && registerForm.get('prenom')?.touched) {
+                <mat-error>{{ getErrorMessage('prenom') }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <!-- Email -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Email</mat-label>
+            <input 
+              matInput 
+              type="email" 
+              formControlName="email"
+              autocomplete="email"
+            >
+            <mat-icon matPrefix>email</mat-icon>
+            @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+              <mat-error>{{ getErrorMessage('email') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Téléphone -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Téléphone</mat-label>
+            <input 
+              matInput 
+              type="tel" 
+              formControlName="telephone"
+              autocomplete="tel"
+            >
+            <mat-icon matPrefix>phone</mat-icon>
+            @if (registerForm.get('telephone')?.invalid && registerForm.get('telephone')?.touched) {
+              <mat-error>{{ getErrorMessage('telephone') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-row">
+            <!-- Mot de passe -->
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Mot de passe</mat-label>
+              <input 
+                matInput 
+                [type]="hidePassword() ? 'password' : 'text'"
+                formControlName="password"
+                autocomplete="new-password"
+              >
+              <mat-icon matPrefix>lock</mat-icon>
+              <button 
+                mat-icon-button 
+                matSuffix 
+                type="button"
+                (click)="togglePasswordVisibility('password')"
+              >
+                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                <mat-error>{{ getErrorMessage('password') }}</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Confirmation mot de passe -->
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Confirmer</mat-label>
+              <input 
+                matInput 
+                [type]="hidePasswordConfirm() ? 'password' : 'text'"
+                formControlName="password_confirmation"
+                autocomplete="new-password"
+              >
+              <mat-icon matPrefix>lock_outline</mat-icon>
+              <button 
+                mat-icon-button 
+                matSuffix 
+                type="button"
+                (click)="togglePasswordVisibility('confirm')"
+              >
+                <mat-icon>{{ hidePasswordConfirm() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (passwordMismatch) {
+                <mat-error>Les mots de passe ne correspondent pas</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <!-- Adresse (optionnel) -->
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Adresse (optionnel)</mat-label>
+              <input 
+                matInput 
+                formControlName="adresse"
+              >
+              <mat-icon matPrefix>location_on</mat-icon>
+            </mat-form-field>
+
+            <!-- Ville (optionnel) -->
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Ville (optionnel)</mat-label>
+              <input 
+                matInput 
+                formControlName="ville"
+              >
+              <mat-icon matPrefix>location_city</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <!-- Info activation -->
+          <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <p>Votre compte sera activé par un agent après vérification (24-48h).</p>
+          </div>
+
+          <!-- Bouton inscription -->
+          <button 
+            type="submit" 
+            class="btn btn-primary btn-lg full-width"
+            [disabled]="isLoading()"
+          >
+            @if (isLoading()) {
+              <mat-spinner diameter="20"></mat-spinner>
+              <span>Inscription en cours...</span>
+            } @else {
+              <i class="fas fa-user-plus"></i>
+              <span>Créer mon compte gratuit</span>
+            }
+          </button>
+        </form>
+
+        <!-- Lien connexion -->
+        <div class="login-link">
+          <p>Vous avez déjà un compte ?</p>
+          <a routerLink="/auth/login" class="link">
+            <i class="fas fa-sign-in-alt"></i>
+            Se connecter
+          </a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>&copy; 2025 AUTOTECH SERVICES - Tous droits réservés</p>
+    </div>
+  </div>
+</div>
+

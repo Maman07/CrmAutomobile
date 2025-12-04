@@ -1,0 +1,127 @@
+<mat-sidenav-container class="layout-container">
+  <!-- Sidebar -->
+  <mat-sidenav 
+    mode="side" 
+    opened 
+    class="sidebar"
+  >
+    <!-- Logo -->
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="fas fa-car"></i>
+        <span>AUTOTECH</span>
+      </div>
+    </div>
+
+    <!-- Menu navigation -->
+    <mat-nav-list class="sidebar-menu">
+      @for (item of menuItems(); track item.route) {
+        <a 
+          mat-list-item 
+          [routerLink]="item.route"
+          routerLinkActive="active"
+        >
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+          @if (item.badge) {
+            <span matListItemMeta class="badge">{{ item.badge }}</span>
+          }
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Contenu principal -->
+  <mat-sidenav-content>
+    <!-- Navbar -->
+    <mat-toolbar class="navbar">
+      <div class="navbar-content">
+        <!-- Titre page (dynamique selon route) -->
+        <div class="navbar-title">
+          <h1>Tableau de bord</h1>
+        </div>
+
+        <!-- Actions navbar -->
+        <div class="navbar-actions">
+          <!-- Notifications -->
+          <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
+            <mat-icon [matBadge]="3" matBadgeColor="warn">notifications</mat-icon>
+          </button>
+
+          <!-- Menu utilisateur -->
+          <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-trigger">
+            <mat-icon>{{ getRoleIcon(userRole() || '') }}</mat-icon>
+            <span class="user-name">{{ currentUser()?.nom_complet }}</span>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-toolbar>
+
+    <!-- Zone de contenu -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Menu notifications -->
+<mat-menu #notificationMenu="matMenu" class="notification-menu">
+  <div class="menu-header">
+    <h3>Notifications</h3>
+    <button mat-button class="mark-all-read">Tout marquer lu</button>
+  </div>
+  
+  <button mat-menu-item class="notification-item unread">
+    <mat-icon color="accent">info</mat-icon>
+    <div class="notification-content">
+      <p class="notification-title">Nouveau ticket créé</p>
+      <p class="notification-time">Il y a 5 minutes</p>
+    </div>
+  </button>
+
+  <button mat-menu-item class="notification-item">
+    <mat-icon color="primary">check_circle</mat-icon>
+    <div class="notification-content">
+      <p class="notification-title">Devis approuvé</p>
+      <p class="notification-time">Il y a 2 heures</p>
+    </div>
+  </button>
+
+  <mat-divider></mat-divider>
+  <button mat-menu-item class="view-all">
+    Voir toutes les notifications
+  </button>
+</mat-menu>
+
+<!-- Menu utilisateur -->
+<mat-menu #userMenu="matMenu" class="user-menu">
+  <div class="user-menu-header">
+    <mat-icon class="user-avatar">{{ getRoleIcon(userRole() || '') }}</mat-icon>
+    <div class="user-info">
+      <p class="user-name-full">{{ currentUser()?.nom_complet }}</p>
+      <p class="user-role">{{ getRoleLabel(userRole() || '') }}</p>
+      <p class="user-email">{{ currentUser()?.email }}</p>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <button mat-menu-item>
+    <mat-icon>person</mat-icon>
+    <span>Mon profil</span>
+  </button>
+
+  <button mat-menu-item>
+    <mat-icon>settings</mat-icon>
+    <span>Paramètres</span>
+  </button>
+
+  <mat-divider></mat-divider>
+
+  <button mat-menu-item (click)="logout()" class="logout-btn">
+    <mat-icon color="warn">logout</mat-icon>
+    <span>Déconnexion</span>
+  </button>
+</mat-menu>
+

@@ -1,0 +1,90 @@
+<div class="login-container">
+  <div class="login-card-wrapper">
+    <!-- Logo AUTOTECH -->
+    <div class="logo-section">
+      <div class="logo">
+        <i class="fas fa-car"></i>
+        <span>AUTOTECH</span>
+      </div>
+    </div>
+
+    <!-- Carte de connexion -->
+    <mat-card class="login-card">
+      <mat-card-content>
+        <h2>Connexion</h2>
+        <p class="subtitle">Accédez à votre espace personnel</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Email -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Adresse email</mat-label>
+            <input 
+              matInput 
+              type="email" 
+              formControlName="email"
+              autocomplete="email"
+            >
+            <mat-icon matPrefix>email</mat-icon>
+            @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+              <mat-error>{{ getErrorMessage('email') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Mot de passe -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Mot de passe</mat-label>
+            <input 
+              matInput 
+              [type]="hidePassword() ? 'password' : 'text'"
+              formControlName="password"
+              autocomplete="current-password"
+            >
+            <mat-icon matPrefix>lock</mat-icon>
+            <button 
+              mat-icon-button 
+              matSuffix 
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="'Toggle password visibility'"
+            >
+              <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+              <mat-error>{{ getErrorMessage('password') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Bouton connexion -->
+          <button 
+            type="submit" 
+            class="btn btn-primary btn-lg full-width"
+            [disabled]="isLoading()"
+          >
+            @if (isLoading()) {
+              <mat-spinner diameter="20"></mat-spinner>
+              <span>Connexion en cours...</span>
+            } @else {
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Se connecter</span>
+            }
+          </button>
+        </form>
+
+        <!-- Lien inscription -->
+        <div class="register-link">
+          <p>Pas encore de compte ?</p>
+          <a routerLink="/auth/register" class="link">
+            <i class="fas fa-user-plus"></i>
+            Créer un compte gratuit
+          </a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>&copy; 2025 AUTOTECH SERVICES - Tous droits réservés</p>
+    </div>
+  </div>
+</div>
+
