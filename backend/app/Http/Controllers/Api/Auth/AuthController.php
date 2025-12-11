@@ -75,20 +75,26 @@ class AuthController extends BaseController
             return $this->sendError('Email ou mot de passe incorrect', [], 401);
         }
 
+        // Récupérer l'utilisateur une seule fois
+        $user = auth('api')->user();
+
         // Vérifier si le compte est actif
-        if (auth('api')->user()->statut !== 'actif') {
+        if ($user->statut !== 'actif') {
             auth('api')->logout();
             return $this->sendError('Votre compte est inactif. Contactez un administrateur.', [], 403);
         }
 
         // Mettre à jour la dernière connexion
-        auth('api')->user()->update(['derniere_connexion' => now()]);
+        $user->update(['derniere_connexion' => now()]);
+
+        // Recharger l'utilisateur pour avoir la dernière connexion à jour
+        $user->refresh();
 
         return $this->sendResponse([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => auth('api')->user(),
+            'user' => $user,
         ], 'Connexion réussie');
     }
 
