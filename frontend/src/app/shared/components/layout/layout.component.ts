@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -39,6 +39,10 @@ interface MenuItem {
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
+  // Injection des services
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   // User actuel
   currentUser = this.authService.currentUser;
   userRole = this.authService.userRole;
@@ -48,11 +52,6 @@ export class LayoutComponent {
     const role = this.userRole();
     return this.getMenuByRole(role || '');
   });
-
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
 
   /**
    * Menu selon rôle utilisateur
