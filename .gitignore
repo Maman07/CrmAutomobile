@@ -35,3 +35,15 @@ composer. lock
 node_modules/
 package-lock.json
 yarn.lock
+
+# SonarQube
+.scannerwork/
+**/.scannerwork/
+
+# Docker
+*.log
+
+# Angular cache
+.angular/
+frontend/.angular/
+**/.angular/cache/
