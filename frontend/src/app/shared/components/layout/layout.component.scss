@@ -7,11 +7,12 @@
 // ============================================
 .sidebar {
   width: 260px;
-  border-right: 1px solid #e0e0e0;
+  background: #1e2a5e; // Fond bleu foncé comme dans l'image
   
   .sidebar-header {
     padding: 24px 16px;
-    background: linear-gradient(135deg, #1e2a5e 0%, #2d3e7f 100%);
+    background: #1e2a5e;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     
     .logo {
       display: flex;
@@ -21,32 +22,35 @@
       
       i {
         font-size: 28px;
-        color: #ff5722;
+        color: white; // Icône blanche comme dans l'image
       }
       
       span {
         font-size: 24px;
         font-weight: 700;
         letter-spacing: 0.5px;
+        color: white;
       }
     }
   }
   
   .sidebar-menu {
     padding: 16px 8px;
+    background: #1e2a5e;
     
     a {
       margin-bottom: 4px;
       border-radius: 8px;
       transition: all 0.3s;
+      color: white !important; // Texte blanc par défaut
       
       &:hover {
-        background: rgba(#ff5722, 0.1);
+        background: rgba(255, 255, 255, 0.1);
       }
       
       &.active {
-        background: linear-gradient(135deg, #ff5722 0%, #ff6e40 100%);
-        color: white;
+        background: #ff5722; // Orange pour l'item actif
+        color: white !important;
         
         mat-icon {
           color: white !important;
@@ -59,7 +63,11 @@
       }
       
       mat-icon {
-        color: #1e2a5e;
+        color: white !important; // Icônes blanches
+      }
+      
+      span {
+        color: white !important; // Texte blanc
       }
       
       .badge {
@@ -129,9 +137,9 @@
 // CONTENT
 // ============================================
 .content {
-  padding: 24px;
+  padding: 0; // Pas de padding ici, géré par les composants enfants
   min-height: calc(100vh - 64px);
-  background: #f5f7fa;
+  background: #f5f7fa; // Fond gris clair comme dans l'image
 }
 
 // ============================================

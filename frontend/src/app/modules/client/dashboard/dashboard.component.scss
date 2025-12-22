@@ -1,6 +1,9 @@
 .dashboard-container {
   max-width: 1400px;
   margin: 0 auto;
+  background: #f5f7fa; // Fond gris clair comme dans l'image
+  min-height: 100vh;
+  padding: 0;
 }
 
 // ============================================
@@ -11,17 +14,37 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 32px;
+  padding: 24px;
+  background: #f5f7fa;
   
   h1 {
     font-size: 32px;
     font-weight: 700;
-    color: #1e2a5e;
+    color: #1e2a5e; // Bleu foncé comme dans l'image
     margin: 0 0 8px 0;
   }
   
   .subtitle {
     color: #5f6368;
     margin: 0;
+  }
+  
+  .btn-create-ticket {
+    background: #ff5722 !important; // Orange comme dans l'image
+    color: white !important;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(255, 87, 34, 0.3);
+    
+    mat-icon {
+      color: white;
+    }
+    
+    &:hover {
+      background: #ff6e40 !important;
+      box-shadow: 0 4px 12px rgba(255, 87, 34, 0.4);
+    }
   }
 }
 
@@ -49,15 +72,21 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
   margin-bottom: 32px;
+  padding: 0 24px;
 }
 
 .stat-card {
   position: relative;
   overflow: hidden;
+  background: white !important; // Fond blanc comme dans l'image
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: none;
   
   mat-card-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
     gap: 16px;
     padding: 24px !important;
   }
@@ -65,10 +94,11 @@
   .stat-icon {
     width: 56px;
     height: 56px;
-    border-radius: 12px;
+    border-radius: 12px; // Carré arrondi comme dans l'image
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     
     mat-icon {
       font-size: 32px;
@@ -86,6 +116,8 @@
       color: #5f6368;
       font-size: 14px;
       font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .stat-value {
@@ -106,31 +138,44 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    color: inherit;
+    color: #ff5722; // Orange pour les actions
+    font-weight: 500;
+    text-decoration: none;
+    
+    mat-icon {
+      color: #ff5722;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+    
+    &:hover {
+      color: #ff6e40;
+    }
   }
   
-  // Couleurs par type
+  // Couleurs par type selon l'image
   &.stat-card-primary {
     .stat-icon {
-      background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);
+      background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%); // Bleu pour véhicules
     }
   }
   
   &.stat-card-warning {
     .stat-icon {
-      background: linear-gradient(135deg, #ff9800 0%, #ffa726 100%);
+      background: linear-gradient(135deg, #ff9800 0%, #ffa726 100%); // Orange pour en cours
     }
   }
   
   &.stat-card-success {
     .stat-icon {
-      background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+      background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%); // Vert pour terminés
     }
   }
   
   &.stat-card-danger {
     .stat-icon {
-      background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+      background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%); // Violet pour factures
     }
   }
 }
@@ -140,9 +185,21 @@
 // ============================================
 .actions-card {
   margin-bottom: 32px;
+  background: white !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 0 24px 24px 24px;
   
   mat-card-header {
     margin-bottom: 16px;
+    padding: 16px 0 !important;
+    border-bottom: 1px solid #e0e0e0;
+    
+    mat-card-title {
+      color: #1e2a5e;
+      font-size: 18px;
+      font-weight: 600;
+    }
   }
   
   .actions-grid {
@@ -157,13 +214,14 @@
       gap: 12px;
       padding: 24px;
       height: auto;
-      background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+      background: #f5f7fa; // Fond gris clair
       border: 2px solid #e0e0e0;
+      border-radius: 12px;
       transition: all 0.3s;
       
       &:hover {
         border-color: #ff5722;
-        background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%);
+        background: #fff3e0; // Fond orange clair au survol
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(255, 87, 34, 0.2);
       }
@@ -190,6 +248,13 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 24px;
+  padding: 0 24px 24px 24px;
+  
+  mat-card {
+    background: white !important;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
   
   mat-card-header {
     display: flex;
@@ -214,6 +279,7 @@
     
     .view-all-btn {
       color: #ff5722;
+      font-weight: 500;
     }
   }
 }
