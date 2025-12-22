@@ -64,7 +64,9 @@ export class LoginComponent {
       next: (response) => {
         this.isLoading.set(false);
         this.loginForm.reset(); // Réinitialiser le formulaire
-        this.toastr.success(`Bienvenue ${response.data.user.nom_complet} !`, 'Connexion réussie');
+        const user = response.data.user;
+        const nomComplet = `${user.prenom} ${user.nom}`;
+        this.toastr.success(`Bienvenue ${nomComplet} !`, 'Connexion réussie');
         // Redirection automatique gérée par AuthService
       },
       error: (error) => {
