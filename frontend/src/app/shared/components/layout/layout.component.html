@@ -72,21 +72,37 @@
     <button mat-button class="mark-all-read">Tout marquer lu</button>
   </div>
   
-  <button mat-menu-item class="notification-item unread">
-    <mat-icon color="accent">info</mat-icon>
-    <div class="notification-content">
-      <p class="notification-title">Nouveau ticket créé</p>
-      <p class="notification-time">Il y a 5 minutes</p>
-    </div>
-  </button>
+  <div class="notification-list">
+    <button mat-menu-item class="notification-item unread">
+      <div class="notification-icon-wrapper">
+        <mat-icon>info</mat-icon>
+      </div>
+      <div class="notification-content">
+        <p class="notification-title">Nouveau ticket créé</p>
+        <p class="notification-time">Il y a 5 minutes</p>
+      </div>
+    </button>
 
-  <button mat-menu-item class="notification-item">
-    <mat-icon color="primary">check_circle</mat-icon>
-    <div class="notification-content">
-      <p class="notification-title">Devis approuvé</p>
-      <p class="notification-time">Il y a 2 heures</p>
-    </div>
-  </button>
+    <button mat-menu-item class="notification-item">
+      <div class="notification-icon-wrapper">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div class="notification-content">
+        <p class="notification-title">Devis approuvé</p>
+        <p class="notification-time">Il y a 2 heures</p>
+      </div>
+    </button>
+
+    <button mat-menu-item class="notification-item">
+      <div class="notification-icon-wrapper">
+        <mat-icon>payment</mat-icon>
+      </div>
+      <div class="notification-content">
+        <p class="notification-title">Facture disponible</p>
+        <p class="notification-time">Il y a 1 jour</p>
+      </div>
+    </button>
+  </div>
 
   <mat-divider></mat-divider>
   <button mat-menu-item class="view-all">
@@ -97,9 +113,11 @@
 <!-- Menu utilisateur -->
 <mat-menu #userMenu="matMenu" class="user-menu">
   <div class="user-menu-header">
-    <mat-icon class="user-avatar">{{ getRoleIcon(userRole() || '') }}</mat-icon>
+    <div class="user-avatar-wrapper">
+      <mat-icon class="user-avatar">{{ getRoleIcon(userRole() || '') }}</mat-icon>
+    </div>
     <div class="user-info">
-      <p class="user-name-full">{{ currentUser()?.nom_complet }}</p>
+      <p class="user-name-full">{{ currentUser()?.prenom }} {{ currentUser()?.nom }}</p>
       <p class="user-role">{{ getRoleLabel(userRole() || '') }}</p>
       <p class="user-email">{{ currentUser()?.email }}</p>
     </div>
@@ -107,20 +125,22 @@
 
   <mat-divider></mat-divider>
 
-  <button mat-menu-item>
-    <mat-icon>person</mat-icon>
-    <span>Mon profil</span>
-  </button>
+  <div class="menu-items">
+    <button mat-menu-item class="menu-item">
+      <mat-icon>person</mat-icon>
+      <span>Mon profil</span>
+    </button>
 
-  <button mat-menu-item>
-    <mat-icon>settings</mat-icon>
-    <span>Paramètres</span>
-  </button>
+    <button mat-menu-item class="menu-item">
+      <mat-icon>settings</mat-icon>
+      <span>Paramètres</span>
+    </button>
+  </div>
 
   <mat-divider></mat-divider>
 
   <button mat-menu-item (click)="logout()" class="logout-btn">
-    <mat-icon color="warn">logout</mat-icon>
+    <mat-icon>logout</mat-icon>
     <span>Déconnexion</span>
   </button>
 </mat-menu>

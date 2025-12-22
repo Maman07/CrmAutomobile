@@ -69,32 +69,46 @@
 // ============================================
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr); // 4 cartes sur une même ligne
   gap: 24px;
   margin-bottom: 32px;
   padding: 0 24px;
+  
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .stat-card {
   position: relative;
   overflow: hidden;
-  background: white !important; // Fond blanc comme dans l'image
+  background: white !important;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
   
   mat-card-content {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
     gap: 16px;
     padding: 24px !important;
+    min-height: 140px;
   }
   
   .stat-icon {
     width: 56px;
     height: 56px;
-    border-radius: 12px; // Carré arrondi comme dans l'image
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -110,44 +124,44 @@
   
   .stat-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     
     .stat-label {
-      margin: 0 0 8px 0;
+      margin: 0 0 12px 0;
       color: #5f6368;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     
     .stat-value {
-      margin: 0 0 4px 0;
-      font-size: 36px;
+      margin: 0;
+      font-size: 42px;
       font-weight: 700;
       color: #1e2a5e;
+      line-height: 1;
     }
     
     .stat-subtitle {
-      margin: 0;
-      font-size: 14px;
+      margin: 8px 0 0 0;
+      font-size: 12px;
       color: #5f6368;
     }
   }
   
   .stat-action {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 4px;
-    color: #ff5722; // Orange pour les actions
+    color: #ff5722;
     font-weight: 500;
+    font-size: 14px;
     text-decoration: none;
-    
-    mat-icon {
-      color: #ff5722;
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
-    }
+    margin-top: auto;
+    align-self: flex-end;
+    transition: color 0.2s;
     
     &:hover {
       color: #ff6e40;
@@ -157,25 +171,25 @@
   // Couleurs par type selon l'image
   &.stat-card-primary {
     .stat-icon {
-      background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%); // Bleu pour véhicules
+      background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);
     }
   }
   
   &.stat-card-warning {
     .stat-icon {
-      background: linear-gradient(135deg, #ff9800 0%, #ffa726 100%); // Orange pour en cours
+      background: linear-gradient(135deg, #ff9800 0%, #ffa726 100%);
     }
   }
   
   &.stat-card-success {
     .stat-icon {
-      background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%); // Vert pour terminés
+      background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
     }
   }
   
   &.stat-card-danger {
     .stat-icon {
-      background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%); // Violet pour factures
+      background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);
     }
   }
 }
@@ -385,6 +399,35 @@
   p {
     color: #5f6368;
     margin-bottom: 24px;
+  }
+  
+  .btn-empty-state {
+    background: #ff5722 !important; // Orange
+    color: white !important;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    
+    &:hover {
+      background: #ff6e40 !important;
+    }
+  }
+}
+
+// ============================================
+// BOUTONS VOIR DÉTAILS
+// ============================================
+.btn-view-details {
+  background: #ff5722 !important; // Orange
+  color: white !important;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  min-width: auto;
+  
+  &:hover {
+    background: #ff6e40 !important;
   }
 }
 

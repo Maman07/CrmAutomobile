@@ -32,17 +32,15 @@
               <mat-icon>directions_car</mat-icon>
             </div>
             <div class="stat-info">
-              <p class="stat-label">Mes véhicules</p>
+              <p class="stat-label">Véhicules</p>
               <h2 class="stat-value">{{ stats()?.total_vehicules || 0 }}</h2>
             </div>
-            <button 
-              mat-button 
+            <a 
               routerLink="/client/vehicules"
               class="stat-action"
             >
-              Voir tout
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
+              Voir tout →
+            </a>
           </mat-card-content>
         </mat-card>
 
@@ -53,17 +51,15 @@
               <mat-icon>build</mat-icon>
             </div>
             <div class="stat-info">
-              <p class="stat-label">Tickets en cours</p>
+              <p class="stat-label">En cours</p>
               <h2 class="stat-value">{{ stats()?.tickets_en_cours || 0 }}</h2>
             </div>
-            <button 
-              mat-button 
+            <a 
               routerLink="/client/tickets"
               class="stat-action"
             >
-              Voir tout
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
+              Voir tout →
+            </a>
           </mat-card-content>
         </mat-card>
 
@@ -74,17 +70,15 @@
               <mat-icon>check_circle</mat-icon>
             </div>
             <div class="stat-info">
-              <p class="stat-label">Tickets terminés</p>
+              <p class="stat-label">Terminés</p>
               <h2 class="stat-value">{{ stats()?.tickets_clotures || 0 }}</h2>
             </div>
-            <button 
-              mat-button 
+            <a 
               routerLink="/client/historique"
               class="stat-action"
             >
-              Historique
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
+              Histoire →
+            </a>
           </mat-card-content>
         </mat-card>
 
@@ -95,20 +89,15 @@
               <mat-icon>payment</mat-icon>
             </div>
             <div class="stat-info">
-              <p class="stat-label">Factures à payer</p>
+              <p class="stat-label">Factures</p>
               <h2 class="stat-value">{{ stats()?.factures_en_attente || 0 }}</h2>
-              <p class="stat-subtitle">
-                {{ stats()?.montant_factures_impayees || 0 | number:'1.0-0' }} FCFA
-              </p>
             </div>
-            <button 
-              mat-button 
+            <a 
               routerLink="/client/factures"
               class="stat-action"
             >
-              Payer
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
+              Payer →
+            </a>
           </mat-card-content>
         </mat-card>
       </div>
@@ -182,7 +171,7 @@
                 <p>Aucun ticket pour le moment</p>
                 <button 
                   mat-raised-button 
-                  color="primary"
+                  class="btn-empty-state"
                   routerLink="/client/tickets/create"
                 >
                   Créer mon premier ticket
@@ -229,11 +218,12 @@
                   <th mat-header-cell *matHeaderCellDef></th>
                   <td mat-cell *matCellDef="let ticket">
                     <button 
-                      mat-icon-button 
+                      mat-raised-button 
+                      class="btn-view-details"
                       [routerLink]="['/client/tickets', ticket.id]"
                       matTooltip="Voir détails"
                     >
-                      <mat-icon>visibility</mat-icon>
+                      Voir
                     </button>
                   </td>
                 </ng-container>
@@ -267,7 +257,7 @@
                 <p>Aucun véhicule enregistré</p>
                 <button 
                   mat-raised-button 
-                  color="primary"
+                  class="btn-empty-state"
                   routerLink="/client/vehicules/add"
                 >
                   Ajouter un véhicule
@@ -288,10 +278,11 @@
                       }
                     </div>
                     <button 
-                      mat-icon-button 
+                      mat-raised-button 
+                      class="btn-view-details"
                       [routerLink]="['/client/vehicules', vehicule.id]"
                     >
-                      <mat-icon>arrow_forward</mat-icon>
+                      Voir
                     </button>
                   </div>
                 }
